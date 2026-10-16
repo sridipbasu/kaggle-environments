@@ -43,8 +43,9 @@ from litellm.exceptions import (
 
 litellm.drop_params = True
 
-# Cap on output tokens (reasoning + visible content) per LLM call.
-_MAX_OUTPUT_TOKENS = 65536
+# Cap on output tokens (reasoning + visible content) per LLM call. 65535, not
+# 65536: Vertex rejects 65536 for Gemini 2.5 Flash-Lite (its range is exclusive).
+_MAX_OUTPUT_TOKENS = 65535
 
 _RETRYABLE_TRANSPORT_EXCEPTIONS: tuple[type[BaseException], ...] = (
     httpx.TimeoutException,
