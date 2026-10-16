@@ -13,4 +13,6 @@ No live Game Arena game tests inductive rule discovery. Chess and Go test search
 
 Guesses are scored exactly, with no LLM judge. A rule is one short restricted Python expression, and a guess is correct only if it gives the same answer as the secret rule on all 2,704 ordered card pairs of a 52-card deck. Two guesses written differently but meaning the same thing are both correct.
 
-![A finished Eleusis game: the secret rule at the top, one scientist's accepted cards in a row with rejected cards hanging under the card they failed to follow, its hand, and its wrong guesses](images/example-game.png)
+![A finished Eleusis game: the secret rule at the top, then each scientist's table side by side, with accepted cards in a row, rejected cards hanging under the card they failed to follow, the hand, and wrong guesses](images/example-game.png)
+
+See it play out step by step in the [Example Game](03-example-game.md).

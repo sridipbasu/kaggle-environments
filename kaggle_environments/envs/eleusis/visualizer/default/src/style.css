@@ -69,6 +69,13 @@
 .eleusis .tables {
   display: grid;
   gap: 12px;
+  /* Scientists side by side so tables (same deal, same rule) compare at a glance; stacks on narrow screens. */
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  align-items: start;
+}
+.eleusis .wrong ul {
+  max-height: 140px;
+  overflow-y: auto;
 }
 .eleusis .table {
   background: var(--panel);

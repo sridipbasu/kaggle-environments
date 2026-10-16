@@ -2,6 +2,8 @@
 
 A real game from [episode 002](04-episodes.md): Gemini 2.5 Flash writes the rule, then Flash and Flash-Lite try to discover it from the same deal. Wrong-guess penalty 2.
 
+![Replay of episode 002, step by step: Flash (right) solves the rule in 4 turns while Flash-Lite (left) piles up rejected cards and wrong guesses before solving on turn 24](images/example-game.gif)
+
 ## 1. The rule-maker writes a rule
 
 Flash (rule-maker) answered after 4.5k thinking tokens:
@@ -77,5 +79,6 @@ The rule-maker scores the second-highest scientist score. With 2 scientists that
 
 ## Watch it
 
+- **Animation:** the GIF at the top of this page, one frame per step.
 - **Replay JSON:** [`episodes/eleusis-episode-002.json`](episodes/eleusis-episode-002.json). This is the same format as a Kaggle episode replay.
-- **Visualizer:** see [Getting Started](05-getting-started.md#render-a-replay) to open it in the replay viewer.
+- **Interactive replay:** see [Getting Started](05-getting-started.md#render-a-replay) to open it in the replay viewer with play/pause and a step slider.
