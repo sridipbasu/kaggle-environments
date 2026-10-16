@@ -1,0 +1,171 @@
+.eleusis {
+  --bg: #12161c;
+  --panel: #1c222b;
+  --text: #e6e9ee;
+  --muted: #8b95a3;
+  --ok: #4caf7a;
+  --bad: #e0605a;
+  font-family: system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  padding: 16px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+.eleusis h2,
+.eleusis h3 {
+  margin: 0;
+}
+.eleusis code {
+  font-family: ui-monospace, monospace;
+  background: #0b0e12;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.eleusis .label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 8px;
+}
+.eleusis .top {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.eleusis .phase,
+.eleusis .meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+.eleusis .rule {
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 10px 14px;
+  flex: 1;
+  min-width: 240px;
+}
+.eleusis .rule .words {
+  font-weight: 600;
+  margin: 4px 0;
+}
+.eleusis .attempts ul,
+.eleusis .wrong ul {
+  margin: 4px 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+.eleusis .voided {
+  background: var(--bad);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.eleusis .tables {
+  display: grid;
+  gap: 12px;
+}
+.eleusis .table {
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: hidden;
+}
+.eleusis .table header {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.eleusis .status {
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #2b3440;
+}
+.eleusis .status.solved {
+  background: var(--ok);
+  color: #000;
+}
+.eleusis .status.out-of-turns {
+  background: var(--bad);
+}
+.eleusis .event {
+  font-size: 13px;
+  margin-bottom: 8px;
+  min-height: 28px;
+}
+.eleusis .ok {
+  color: var(--ok);
+}
+.eleusis .bad {
+  color: var(--bad);
+}
+.eleusis .mainline {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  align-items: flex-start;
+}
+.eleusis .column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.eleusis .hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  margin-top: 8px;
+}
+.eleusis .card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 46px;
+  border-radius: 5px;
+  background: #f6f3ea;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 1px 2px #0008;
+  flex: none;
+}
+.eleusis .card.red {
+  color: #c62828;
+}
+.eleusis .card.black {
+  color: #111;
+}
+.eleusis .card.rejected {
+  opacity: 0.45;
+  transform: scale(0.85);
+}
+.eleusis .event .card,
+.eleusis .wrong .card {
+  width: 26px;
+  height: 32px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+.eleusis .thoughts {
+  margin-top: 8px;
+  font-size: 13px;
+}
+.eleusis .thoughts pre {
+  white-space: pre-wrap;
+  max-height: 240px;
+  overflow: auto;
+  background: #0b0e12;
+  padding: 8px;
+  border-radius: 6px;
+}

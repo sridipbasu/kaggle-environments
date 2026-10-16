@@ -1,0 +1,182 @@
+{
+  "name": "eleusis",
+  "title": "Eleusis",
+  "description": "Inductive-reasoning card game. Seat 0 is the rule-maker: it writes a secret rule (one restricted Python expression over `card` and `prev`) deciding which card may follow which. The rule must pass a fairness gate (accept rate within [accept_rate_min, accept_rate_max], every card playable after some card, no dead ends) or the rule-maker retries; after rule_retries failures a library rule is used and the rule-maker scores 0. Every other seat is a scientist at its own table (identical deal, same secret rule, no visibility of other tables). Each turn a scientist either plays a card from its hand (the engine says accepted -> mainline, or rejected -> sideline) or guesses the rule as words + code. A guess is correct iff its code agrees with the secret rule on all 2,704 (card, prev) pairs of one deck. A solved scientist scores max(0, max_turns - turns_used - wrong_guess_penalty * wrong_guesses); unsolved scores 0. The rule-maker scores the second-best scientist score.",
+  "version": "1.0.0",
+  "agents": [3, 4, 5],
+  "configuration": {
+    "max_turns": {
+      "description": "Turns per scientist. Every play, guess, or failed action uses one turn.",
+      "type": "integer",
+      "default": 30,
+      "minimum": 1
+    },
+    "hand_size": {
+      "description": "Cards in each scientist's hand. After every play one card is drawn, so the hand stays full.",
+      "type": "integer",
+      "default": 12,
+      "minimum": 1
+    },
+    "num_decks": {
+      "description": "Standard 52-card decks shuffled together into each table's shoe.",
+      "type": "integer",
+      "default": 2,
+      "minimum": 1
+    },
+    "wrong_guess_penalty": {
+      "description": "Points deducted per wrong guess from a solved scientist's score (on top of the turn the guess uses). Run with a low (2) and a high (5) setting to separate bold from cautious play.",
+      "type": "number",
+      "default": 2,
+      "minimum": 0
+    },
+    "rule_retries": {
+      "description": "Rule submissions the rule-maker gets. After this many invalid or unfair rules, a random library rule is used and the rule-maker scores 0.",
+      "type": "integer",
+      "default": 3,
+      "minimum": 1
+    },
+    "accept_rate_min": {
+      "description": "Fairness gate: minimum fraction of the 2,704 (card, prev) pairs the rule must accept.",
+      "type": "number",
+      "default": 0.2
+    },
+    "accept_rate_max": {
+      "description": "Fairness gate: maximum fraction of the 2,704 (card, prev) pairs the rule must accept.",
+      "type": "number",
+      "default": 0.6
+    },
+    "seed": {
+      "description": "Seed for the shuffle and fallback-rule choice. Null for nondeterministic play.",
+      "type": ["integer", "null"],
+      "default": null
+    },
+    "runTimeout": {
+      "description": "Seconds the whole episode may run. A game is up to rule_retries + max_turns steps, and every step calls each active scientist in turn, so with reasoning models (20-60 s per call) the framework default of 1200 s kills normal games. 4 hours covers 4 scientists x 30 turns at ~60 s per call.",
+      "type": "number",
+      "minimum": 1,
+      "default": 14400
+    },
+    "actTimeout": {
+      "description": "Seconds per agent action. Matches the core harness LLM_CALL_TIMEOUT budget so the framework never kills a seat the harness still considers in flight.",
+      "type": "number",
+      "default": 3600
+    },
+    "freeForm": {
+      "description": "Always true: rules and guesses are open-ended text, so the core harness accepts free-form submissions.",
+      "type": "boolean",
+      "default": true
+    },
+    "illegalMoveForfeit": {
+      "description": "If true, a model that never produces a valid answer after all harness retries submits -1 instead of raising. The engine scores that as a pass for a scientist (turn used, wrong guess if it was a guess) and a failed rule attempt for the rule-maker, rather than voiding the episode.",
+      "type": "boolean",
+      "default": true
+    },
+    "savePrompt": {
+      "description": "If disabled, skip logging LLM prompts in the replay file.",
+      "type": "boolean",
+      "default": true
+    },
+    "saveResponse": {
+      "description": "If disabled, skip logging raw LLM responses in the replay file.",
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "observation": {
+    "role": {
+      "description": "'rule_maker' (seat 0) or 'scientist' (every other seat).",
+      "type": "string",
+      "default": ""
+    },
+    "phase": {
+      "description": "'rule' (rule-maker writing), 'play' (scientists playing), or 'done'. Empty before initialization.",
+      "type": "string",
+      "default": ""
+    },
+    "max_turns": {
+      "description": "Mirrors configuration.max_turns.",
+      "type": "integer",
+      "default": 30
+    },
+    "wrong_guess_penalty": {
+      "description": "Mirrors configuration.wrong_guess_penalty.",
+      "type": "number",
+      "default": 2
+    },
+    "rule_retries": {
+      "description": "Mirrors configuration.rule_retries.",
+      "type": "integer",
+      "default": 3
+    },
+    "accept_rate_min": {
+      "description": "Mirrors configuration.accept_rate_min.",
+      "type": "number",
+      "default": 0.2
+    },
+    "accept_rate_max": {
+      "description": "Mirrors configuration.accept_rate_max.",
+      "type": "number",
+      "default": 0.6
+    },
+    "num_scientists": {
+      "description": "Number of scientist seats.",
+      "type": "integer",
+      "default": 0
+    },
+    "rule_attempts": {
+      "description": "Rule-maker only: rejected submissions so far, each {words, code, error}.",
+      "type": "array",
+      "default": []
+    },
+    "secret_rule": {
+      "description": "Rule-maker only: the rule in play once accepted, {words, code, source ('rule_maker' or 'library'), accept_rate}. Null before. Scientists never see it.",
+      "type": ["object", "null"],
+      "default": null
+    },
+    "hand": {
+      "description": "Scientist only: cards in hand, e.g. ['10H', 'QD'] (ranks A, 2-10, J, Q, K; suits S, H, D, C).",
+      "type": "array",
+      "default": []
+    },
+    "mainline": {
+      "description": "Scientist only: accepted cards in order, each {card, rejected} where rejected lists the cards refused directly after it.",
+      "type": "array",
+      "default": []
+    },
+    "wrong_guesses": {
+      "description": "Scientist only: incorrect guesses so far, each {words, code, error}; error is set when the code did not compile.",
+      "type": "array",
+      "default": []
+    },
+    "log": {
+      "description": "Scientist only: one entry per used turn: {turn, type: 'play'|'guess'|'pass', ...}.",
+      "type": "array",
+      "default": []
+    },
+    "turns_used": {
+      "description": "Scientist only: turns used so far.",
+      "type": "integer",
+      "default": 0
+    },
+    "solved": {
+      "description": "Scientist only: true once a guess was correct.",
+      "type": "boolean",
+      "default": false
+    },
+    "score": {
+      "description": "Scientist only: final score once solved; 0 otherwise.",
+      "type": "number",
+      "default": 0
+    }
+  },
+  "action": {
+    "description": "Rule-maker: {words, code}. Scientist: {action: 'play', card: 'QD'} or {action: 'guess', words, code}. May be wrapped as {submission: ...}; submission -1 is the harness forfeit signal.",
+    "type": ["object", "string", "integer", "null"],
+    "default": ""
+  },
+  "reward": {
+    "description": "Scientist: its score. Rule-maker: the second-best scientist score (0 if a library rule had to be used).",
+    "type": "number",
+    "default": 0
+  }
+}
