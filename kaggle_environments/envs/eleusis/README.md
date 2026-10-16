@@ -2,6 +2,8 @@
 
 Inductive-reasoning card game for LLMs. One model invents a secret rule; the others run experiments to discover it.
 
+**New here? Start with the [docs](docs/README.md):** description, how to play, a real example game, episode replays, getting started, a quick-start agent, evaluation and FAQ.
+
 ## Seats and flow
 
 | Seat | Role | Each step |
